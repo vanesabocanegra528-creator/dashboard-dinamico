@@ -1,0 +1,74 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Dinámico de Datos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard Dinámico de Datos</h1>
+        <p>Visualiza y actualiza tus datos en un solo lugar.</p>
+    </header>
+
+    <main>
+        <section class="resumen">
+            <article class="tarjeta">
+                <h2>Total de datos</h2>
+                <p id="totalDatos">0</p>
+            </article>
+            <article class="tarjeta">
+                <h2>Valor acumulado</h2>
+                <p id="valorTotal">0</p>
+            </article>
+            <article class="tarjeta">
+                <h2>Promedio</h2>
+                <p id="promedio">0</p>
+            </article>
+        </section>
+
+        <section class="panel">
+            <h2>Agregar un dato</h2>
+            <form id="formulario">
+                <label for="nombre">Nombre o categoría</label>
+                <input type="text" id="nombre" placeholder="Ej. Ventas" required>
+
+                <label for="valor">Valor numérico</label>
+                <input type="number" id="valor" placeholder="Ej. 150" min="0" step="any" required>
+
+                <button type="submit">Agregar dato</button>
+            </form>
+        </section>
+
+        <section class="panel">
+            <h2>Datos registrados</h2>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Categoría</th>
+                            <th>Valor</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaDatos"></tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel">
+            <h2>Gráfica dinámica</h2>
+            <p class="ayuda">La gráfica cambiará al agregar o eliminar datos.</p>
+            <canvas id="grafica" height="280"></canvas>
+        </section>
+    </main>
+
+    <footer>
+        Proyecto académico: Dashboard Dinámico de Datos en la Nube
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
