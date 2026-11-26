@@ -7,14 +7,19 @@
     <title>Dashboard Dinámico de Datos</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+
     <header>
         <h1>Dashboard Dinámico de Datos</h1>
         <p>Visualiza y actualiza la información de tus empleados.</p>
     </header>
 
     <main>
+
+        <!-- Indicadores principales -->
         <section class="resumen">
+
             <article class="tarjeta">
                 <h2>Total de empleados</h2>
                 <p id="totalDatos">0</p>
@@ -29,13 +34,128 @@
                 <h2>Promedio salarial</h2>
                 <p id="promedio">$0</p>
             </article>
+
         </section>
 
+        <!-- Formulario de registro -->
         <section class="panel">
+
+            <h2>Registrar nuevo empleado</h2>
+
+            <form id="formularioEmpleado">
+
+                <label for="nombreEmpleado">Nombre completo</label>
+                <input
+                    type="text"
+                    id="nombreEmpleado"
+                    placeholder="Ej. María Pérez Gómez"
+                    required
+                >
+
+                <label for="tipoDocumento">Tipo de documento</label>
+                <select id="tipoDocumento" required>
+                    <option value="">Seleccionar</option>
+                    <option value="CC">Cédula de ciudadanía</option>
+                    <option value="CE">Cédula de extranjería</option>
+                    <option value="Pasaporte">Pasaporte</option>
+                </select>
+
+                <label for="numeroDocumento">Número de documento</label>
+                <input
+                    type="text"
+                    id="numeroDocumento"
+                    placeholder="Número de documento"
+                    required
+                >
+
+                <label for="correo">Correo corporativo</label>
+                <input
+                    type="email"
+                    id="correo"
+                    placeholder="empleado@empresa.com"
+                    required
+                >
+
+                <label for="telefono">Teléfono</label>
+                <input
+                    type="tel"
+                    id="telefono"
+                    placeholder="Número de contacto"
+                    required
+                >
+
+                <label for="cargo">Cargo</label>
+                <input
+                    type="text"
+                    id="cargo"
+                    placeholder="Ej. Asesor de ventas"
+                    required
+                >
+
+                <label for="area">Área</label>
+                <input
+                    type="text"
+                    id="area"
+                    placeholder="Ej. Ventas"
+                    required
+                >
+
+                <label for="fechaIngreso">Fecha de ingreso</label>
+                <input
+                    type="date"
+                    id="fechaIngreso"
+                    required
+                >
+
+                <label for="salario">Salario mensual (COP)</label>
+                <input
+                    type="number"
+                    id="salario"
+                    placeholder="Ej. 2000000"
+                    min="0"
+                    step="1"
+                    required
+                >
+
+                <label for="turno">Turno</label>
+                <select id="turno" required>
+                    <option value="">Seleccionar</option>
+                    <option value="Diurno">Diurno</option>
+                    <option value="Nocturno">Nocturno</option>
+                    <option value="Rotativo">Rotativo</option>
+                </select>
+
+                <label for="ciudad">Ciudad</label>
+                <input
+                    type="text"
+                    id="ciudad"
+                    placeholder="Ej. Bogotá"
+                    required
+                >
+
+                <label for="estadoEmpleado">Estado</label>
+                <select id="estadoEmpleado" required>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                </select>
+
+                <button type="submit">Guardar empleado</button>
+
+                <p id="mensajeFormulario"></p>
+
+            </form>
+
+        </section>
+
+        <!-- Directorio de empleados -->
+        <section class="panel">
+
             <h2>Directorio de empleados</h2>
+
             <p id="estadoCarga">Cargando información...</p>
 
             <div class="tabla-contenedor">
+
                 <table>
                     <thead>
                         <tr>
@@ -47,18 +167,28 @@
                             <th>Estado</th>
                         </tr>
                     </thead>
+
                     <tbody id="tablaDatos"></tbody>
+
                 </table>
+
             </div>
+
         </section>
 
+        <!-- Gráfica -->
         <section class="panel">
+
             <h2>Empleados por área</h2>
+
             <p class="ayuda">
                 Distribución de empleados según su área de trabajo.
             </p>
+
             <canvas id="grafica" height="280"></canvas>
+
         </section>
+
     </main>
 
     <footer>
@@ -66,5 +196,6 @@
     </footer>
 
     <script src="app.js"></script>
+
 </body>
 </html>
