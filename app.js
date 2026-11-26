@@ -1,6 +1,7 @@
 
 const formulario = document.getElementById("formularioEmpleado");
 const tablaDatos = document.getElementById("tablaDatos");
+const buscadorEmpleado = document.getElementById("buscadorEmpleado");
 
 const totalDatos = document.getElementById("totalDatos");
 const valorTotal = document.getElementById("valorTotal");
@@ -135,11 +136,29 @@ function actualizarDashboard() {
     dibujarGrafica();
 }
 
-// Mostrar empleados en la tabla.
+// Mostrar empleados en la tabla y permitir búsquedas.
 function dibujarTabla() {
     tablaDatos.replaceChildren();
 
-    empleados.forEach(function(empleado) {
+    const busqueda = buscadorEmpleado.value
+        .trim()
+        .toLowerCase();
+
+    const empleadosFiltrados = empleados.filter(function(empleado) {
+        return [
+            empleado.id_empleado,
+            empleado.nombre_completo,
+            empleado.numero_documento,
+            empleado.cargo,
+            empleado.area
+        ].some(function(dato) {
+            return String(dato || "")
+                .toLowerCase()
+                .includes(busqueda);
+        });
+    });
+
+    empleadosFiltrados.forEach(function(empleado) {
         const fila = document.createElement("tr");
 
         const valores = [
@@ -167,8 +186,18 @@ function dibujarTabla() {
 
         tablaDatos.appendChild(fila);
     });
-}
 
+    if (empleadosFiltrados.length === 0) {
+        const fila = document.createElement("tr");
+        const celda = document.createElement("td");
+
+        celda.colSpan = 6;
+        celda.textContent = "No se encontraron empleados.";
+
+        fila.appendChild(celda);
+        tablaDatos.appendChild(fila);
+    }
+}
 // Agrupar empleados por área.
 function dibujarGrafica() {
     const conteoAreas = {};
@@ -258,6 +287,6 @@ function dibujarGrafica() {
 }
 
 window.addEventListener("resize", dibujarGrafica);
-
+buscadorEmpleado.addEventListener("input", dibujarTabla);
 // Cargar los empleados al abrir el dashboard.
 cargarEmpleados();
