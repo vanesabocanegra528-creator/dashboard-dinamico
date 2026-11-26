@@ -1,9 +1,13 @@
 
+const formulario = document.getElementById("formularioEmpleado");
 const tablaDatos = document.getElementById("tablaDatos");
+
 const totalDatos = document.getElementById("totalDatos");
 const valorTotal = document.getElementById("valorTotal");
 const promedio = document.getElementById("promedio");
+
 const estadoCarga = document.getElementById("estadoCarga");
+const mensajeFormulario = document.getElementById("mensajeFormulario");
 
 const canvas = document.getElementById("grafica");
 const contexto = canvas.getContext("2d");
@@ -20,21 +24,16 @@ const formatoMoneda = new Intl.NumberFormat("es-CO", {
     maximumFractionDigits: 0
 });
 
-// Consultar empleados almacenados en Cloudflare D1.
+// Consultar empleados almacenados en D1.
 async function cargarEmpleados() {
     estadoCarga.textContent = "Cargando información...";
 
     try {
         const respuesta = await fetch("/api/empleados");
-
-        if (!respuesta.ok) {
-            throw new Error("No fue posible consultar los empleados.");
-        }
-
         const resultado = await respuesta.json();
 
-        if (!resultado.success) {
-            throw new Error(resultado.error || "Error al consultar D1.");
+        if (!respuesta.ok || !resultado.success) {
+            throw new Error(resultado.error || "No fue posible consultar los empleados.");
         }
 
         empleados = resultado.empleados;
@@ -46,10 +45,72 @@ async function cargarEmpleados() {
             resultado.total + " empleados.";
 
     } catch (error) {
-        estadoCarga.textContent = "Error al cargar los datos: " + error.message;
+        estadoCarga.textContent = "Error al cargar los datos.";
         console.error(error);
     }
 }
+
+// Registrar empleado en Cloudflare D1.
+formulario.addEventListener("submit", async function(evento) {
+    evento.preventDefault();
+
+    const datos = {
+        nombre_completo: document.getElementById("nombreEmpleado").value.trim(),
+        tipo_documento: document.getElementById("tipoDocumento").value,
+        numero_documento: document.getElementById("numeroDocumento").value.trim(),
+        correo_corporativo: document.getElementById("correo").value.trim(),
+        telefono: document.getElementById("telefono").value.trim(),
+        cargo: document.getElementById("cargo").value.trim(),
+        area: document.getElementById("area").value.trim(),
+        fecha_ingreso: document.getElementById("fechaIngreso").value,
+        salario_mensual_cop: Number(document.getElementById("salario").value),
+        turno: document.getElementById("turno").value,
+        ciudad: document.getElementById("ciudad").value.trim(),
+        estado: document.getElementById("estadoEmpleado").value
+    };
+
+    if (!formulario.reportValidity()) {
+        return;
+    }
+
+    mensajeFormulario.textContent = "Guardando empleado...";
+    mensajeFormulario.style.color = "#2583c5";
+
+    const boton = formulario.querySelector('button[type="submit"]');
+    boton.disabled = true;
+
+    try {
+        const respuesta = await fetch("/api/empleados", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(datos)
+        });
+
+        const resultado = await respuesta.json();
+
+        if (!respuesta.ok || !resultado.success) {
+            throw new Error(resultado.error || "No se pudo registrar el empleado.");
+        }
+
+        mensajeFormulario.textContent =
+            resultado.mensaje + " Código: " + resultado.id_empleado;
+
+        mensajeFormulario.style.color = "green";
+
+        formulario.reset();
+
+        await cargarEmpleados();
+
+    } catch (error) {
+        mensajeFormulario.textContent = "Error: " + error.message;
+        mensajeFormulario.style.color = "red";
+        console.error(error);
+    } finally {
+        boton.disabled = false;
+    }
+});
 
 // Actualizar tarjetas, tabla y gráfica.
 function actualizarDashboard() {
@@ -74,7 +135,7 @@ function actualizarDashboard() {
     dibujarGrafica();
 }
 
-// Mostrar los empleados en la tabla.
+// Mostrar empleados en la tabla.
 function dibujarTabla() {
     tablaDatos.replaceChildren();
 
@@ -86,9 +147,7 @@ function dibujarTabla() {
             empleado.nombre_completo,
             empleado.cargo,
             empleado.area,
-            formatoMoneda.format(
-                Number(empleado.salario_mensual_cop || 0)
-            ),
+            formatoMoneda.format(Number(empleado.salario_mensual_cop || 0)),
             empleado.estado
         ];
 
@@ -98,7 +157,9 @@ function dibujarTabla() {
 
             if (indice === 5) {
                 celda.className =
-                    empleado.estado === "Activo" ? "estado-activo" : "estado-inactivo";
+                    empleado.estado === "Activo"
+                    ? "estado-activo"
+                    : "estado-inactivo";
             }
 
             fila.appendChild(celda);
@@ -198,5 +259,5 @@ function dibujarGrafica() {
 
 window.addEventListener("resize", dibujarGrafica);
 
-// Cargar información al abrir el dashboard.
+// Cargar los empleados al abrir el dashboard.
 cargarEmpleados();
