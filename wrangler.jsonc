@@ -1,0 +1,17 @@
+{
+  "name": "dashboard-dinamico",
+  "main": "./worker.js",
+  "compatibility_date": "2026-11-25",
+  "assets": {
+  "directory": "./",
+  "binding": "ASSETS",
+  "run_worker_first": ["/api/*"]
+},
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "dashboard-db",
+      "database_id": "b6b2d35f-fb81-48db-8949-0829f45bbc69"
+    }
+  ]
+}
