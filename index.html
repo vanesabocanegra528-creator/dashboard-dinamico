@@ -10,47 +10,41 @@
 <body>
     <header>
         <h1>Dashboard Dinámico de Datos</h1>
-        <p>Visualiza y actualiza tus datos en un solo lugar.</p>
+        <p>Visualiza y actualiza la información de tus empleados.</p>
     </header>
 
     <main>
         <section class="resumen">
             <article class="tarjeta">
-                <h2>Total de datos</h2>
+                <h2>Total de empleados</h2>
                 <p id="totalDatos">0</p>
             </article>
+
             <article class="tarjeta">
-                <h2>Valor acumulado</h2>
+                <h2>Empleados activos</h2>
                 <p id="valorTotal">0</p>
             </article>
+
             <article class="tarjeta">
-                <h2>Promedio</h2>
-                <p id="promedio">0</p>
+                <h2>Promedio salarial</h2>
+                <p id="promedio">$0</p>
             </article>
         </section>
 
         <section class="panel">
-            <h2>Agregar un dato</h2>
-            <form id="formulario">
-                <label for="nombre">Nombre o categoría</label>
-                <input type="text" id="nombre" placeholder="Ej. Ventas" required>
+            <h2>Directorio de empleados</h2>
+            <p id="estadoCarga">Cargando información...</p>
 
-                <label for="valor">Valor numérico</label>
-                <input type="number" id="valor" placeholder="Ej. 150" min="0" step="any" required>
-
-                <button type="submit">Agregar dato</button>
-            </form>
-        </section>
-
-        <section class="panel">
-            <h2>Datos registrados</h2>
             <div class="tabla-contenedor">
                 <table>
                     <thead>
                         <tr>
-                            <th>Categoría</th>
-                            <th>Valor</th>
-                            <th>Acción</th>
+                            <th>Identificación</th>
+                            <th>Nombre completo</th>
+                            <th>Cargo</th>
+                            <th>Área</th>
+                            <th>Salario mensual</th>
+                            <th>Estado</th>
                         </tr>
                     </thead>
                     <tbody id="tablaDatos"></tbody>
@@ -59,8 +53,10 @@
         </section>
 
         <section class="panel">
-            <h2>Gráfica dinámica</h2>
-            <p class="ayuda">La gráfica cambiará al agregar o eliminar datos.</p>
+            <h2>Empleados por área</h2>
+            <p class="ayuda">
+                Distribución de empleados según su área de trabajo.
+            </p>
             <canvas id="grafica" height="280"></canvas>
         </section>
     </main>
